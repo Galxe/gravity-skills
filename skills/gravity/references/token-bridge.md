@@ -44,7 +44,15 @@ interface IGBridgeSender {
 event TokensLocked(address indexed from, address indexed recipient, uint256 amount, uint128 indexed nonce);
 ```
 
-> **Prefer `bridgeToGravityWithPermit`** when your client can sign an ERC-2612 permit: it folds the ERC-20 approval into the bridge call, so you pay one transaction instead of two (`approve` + `bridge`). The G token supports permit. Fall back to `approve` + `bridgeToGravity` only when signing a permit isn't practical.
+> **Prefer `bridgeToGravityWithPermit`** when your client can sign an ERC-2612 permit: it folds the ERC-20 approval into the bridge call, so you pay one transaction instead of two (`approve` + `bridge`). The G token supports permit. Fall back to `approve` + `bridgeToGravity` only when signing a permit isn't practical. **Full copy-paste `cast` recipe + the failure modes: [`../examples/bridge-g-from-ethereum.md`](../examples/bridge-g-from-ethereum.md#one-transaction-with-cast-permit-path-preferred).**
+
+The permit is `permit(owner = caller, spender = GBridgeSender, value = amount, nonce, deadline)`, verified against the **G token's fixed EIP-712 domain** (on Ethereum, so `chainId` is `1` — not Gravity's `127001`):
+
+```
+name = "Gravity"   version = "1"   chainId = 1   verifyingContract = 0x9C7BEBa8F6eF6643aBd725e45a4E8387eF260649
+```
+
+> **Domain gotchas** (a mismatch makes `permit` recover the wrong signer and the whole bridge tx reverts): the G token has **no standalone `version()` getter** — it reverts; the value is `"1"`, confirmed via EIP-5267 `eip712Domain()`. And signature `v` must be `27`/`28`, not `0`/`1` (add 27 if your signer returns the latter).
 
 Flow: `calculateBridgeFee` → sign a permit → `bridgeToGravityWithPermit{value: fee}(amount, recipient, deadline, v, r, s)` (or, without permit: `approve(sender, amount)` → `bridgeToGravity{value: fee}(amount, recipient)`). After your Ethereum tx **finalizes** (~13 min, see above), consensus relays it and the receiver emits `NativeMinted(recipient, amount, nonce)` on Gravity.
 
