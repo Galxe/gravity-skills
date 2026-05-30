@@ -1,0 +1,29 @@
+{
+  "name": "gravity-skills",
+  "owner": {
+    "name": "Galxe / Gravity",
+    "email": "dev@gravity.xyz"
+  },
+  "metadata": {
+    "description": "Official Gravity plugin for Claude Code - build smart contracts on Gravity L1",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "gravity",
+      "source": "./",
+      "description": "Everything an agent needs to write, deploy, and integrate smart contracts on Gravity L1 (chain 127001): network parameters, the system-contract address map, the native oracle and cross-chain G token bridge ABIs, safe on-chain randomness, and the canonical EVM preinstalls (Multicall3, Permit2, CreateX, ERC-4337).",
+      "version": "0.1.0",
+      "author": {
+        "name": "Galxe / Gravity",
+        "email": "dev@gravity.xyz"
+      },
+      "homepage": "https://docs.gravity.xyz",
+      "repository": "https://github.com/Galxe/gravity-skills",
+      "license": "MIT",
+      "keywords": ["gravity", "ethereum", "evm", "smart-contracts", "oracle", "bridge", "randomness", "l1"],
+      "category": "external-integrations",
+      "tags": ["gravity", "evm", "oracle", "bridge", "randomness"]
+    }
+  ]
+}
