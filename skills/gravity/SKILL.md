@@ -29,7 +29,7 @@ Gravity is an **EVM-compatible Layer 1** (AptosBFT consensus + parallel EVM exec
 - **Bridge G from Ethereum** (cast / wallet / contract) → [`references/token-bridge.md`](references/token-bridge.md) + [`examples/bridge-g-from-ethereum.md`](examples/bridge-g-from-ethereum.md)
 - **Get safe randomness** → just read `block.prevrandao`. Details + the test-and-abort caveat: [`references/randomness.md`](references/randomness.md)
 - **Read the native oracle / write a callback** → [`references/native-oracle.md`](references/native-oracle.md) + [`examples/OracleConsumer.sol`](examples/OracleConsumer.sol)
-- **Use Multicall3 / Permit2 / CreateX / ERC-4337 / wG** → **not deployed yet (TBD)** — see [`references/preinstalls.md`](references/preinstalls.md)
+- **Use Multicall3 / Permit2 / CreateX / ERC-4337 / wG** → live at their canonical cross-chain addresses (ERC-4337 v0.7/v0.8 still pending): [`references/preinstalls.md`](references/preinstalls.md)
 - **Find a system contract address** → [`references/system-contracts.md`](references/system-contracts.md)
 
 ## The three native features at a glance
