@@ -32,6 +32,13 @@ Then ask your agent anything about building on Gravity and it loads the skill on
 /plugin install gravity@gravity-skills
 ```
 
+**Codex plugin** — register this repo as a plugin marketplace (a clone works too) and install:
+
+```
+codex plugin marketplace add Galxe/gravity-skills
+codex plugin add gravity@gravity-skills
+```
+
 **Manual** — point any `SKILL.md`-aware agent directly at [`skills/gravity/`](skills/gravity/), or copy that directory into your agent's skills folder.
 
 </details>
@@ -40,8 +47,12 @@ Then ask your agent anything about building on Gravity and it loads the skill on
 
 ```
 .claude-plugin/
-  marketplace.json     # marketplace manifest (plugin: gravity)
-  plugin.json          # plugin manifest
+  marketplace.json     # Claude Code marketplace manifest (plugin: gravity)
+  plugin.json          # Claude Code plugin manifest
+.agents/plugins/
+  marketplace.json     # Codex marketplace manifest
+.codex-plugin/
+  plugin.json          # Codex plugin manifest
 skills/
   gravity/
     SKILL.md           # entry point — quick facts + system-contract map

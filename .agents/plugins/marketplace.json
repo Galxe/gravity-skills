@@ -1,0 +1,20 @@
+{
+  "name": "gravity-skills",
+  "interface": {
+    "displayName": "gravity-skills"
+  },
+  "plugins": [
+    {
+      "name": "gravity",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "INSTALLED_BY_DEFAULT",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
