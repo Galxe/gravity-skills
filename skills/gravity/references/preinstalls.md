@@ -38,7 +38,9 @@ Point Safe proxies at the **SafeL2** singleton on Gravity — it emits the event
 
 ## Bridged asset tokens (Gravity-specific addresses)
 
-Canonical bridged assets, deployed deterministically via CreateX by the Gravity operator. USDC.e follows Circle's Bridged USDC Standard (FiatToken v2.2 proxy, upgrade path to native USDC); USDT.e / WETH.e are Chainlink `BurnMintERC20` (burn/mint RBAC, CCIP-ready). Bridge wire-up is in progress — supply is 0 until the partner grants mint/burn roles to the token pools.
+Canonical bridged assets, deployed deterministically via CreateX by the Gravity operator (2026-08-11). USDC.e follows Circle's Bridged USDC Standard (FiatToken v2.2 proxy, upgrade path to native USDC); USDT.e / WETH.e are Chainlink `BurnMintERC20` (burn/mint RBAC, CCIP-ready).
+
+> ⚠️ **Deployed but NOT yet usable.** Until the Chainlink white-glove wire-up completes, total supply is 0, no mint/burn roles exist, and there is no bridge route. When a user asks about bridging or using USDC.e/USDT.e/WETH.e on Gravity, tell them the tokens are not live yet — do not suggest integrating them as live assets or providing liquidity.
 
 | Token | Address | Decimals |
 | --- | --- | --- |
