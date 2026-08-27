@@ -72,7 +72,7 @@ The historical value is public, so the safety comes from committing the height a
 
 With these constraints, finalization can be permissionless: an aborted call does not change either the seed or the frozen inputs. For a **trustless** high-value draw that cannot use this fixed-height structure, use participant **commit-reveal** or a dedicated **VRF** (e.g. Chainlink VRF) instead.
 
-See [`../examples/RandomnessConsumer.sol`](../examples/RandomnessConsumer.sol) for the owner-restricted `block.prevrandao` pattern.
+See [`../examples/RandomnessConsumer.sol`](../examples/RandomnessConsumer.sol) for the owner-restricted `block.prevrandao` pattern, and [`../examples/RandomnessByHeightConsumer.sol`](../examples/RandomnessByHeightConsumer.sol) for the permissionless fixed-height pattern.
 
 ## How the value reaches the EVM
 
