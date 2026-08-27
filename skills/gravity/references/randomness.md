@@ -53,47 +53,28 @@ library GravityRandomness {
 
 The current gas policy charges 4,000 gas for the current block, future misses within the `uint64` height range, and the most recent 86,400 ancestor blocks (about eight hours at three blocks per second), and 20,000 gas for older historical lookups. These values are hardfork-adjustable.
 
-Historical randomness is already public once its block exists. If it will select a winner or allocate value, freeze the eligible participants and other inputs before the chosen future block height, then finalize against that fixed height after the block is produced. Do not let participants choose their inputs after seeing the value.
+## Avoid test-and-abort
 
-## Prevent selective-revert retries ("test-and-abort")
+**Direct use is fine when no one can profit from a re-roll** — cosmetic rolls, NPC behaviour, sampling where every outcome is equivalent to the caller. Just read `block.prevrandao`.
 
-**Direct use is fine when no one can profit from a re-roll** — cosmetic rolls, NPC behaviour, or sampling where every outcome is equivalent to the caller. Just read `block.prevrandao`.
+**When the caller *can* profit** (a raffle, a rare-trait mint — any payout to a participant), a one-call draw is exploitable. An attacker wraps your `draw()` in their own contract, reverts the whole transaction whenever they lose, and retries next block for a *fresh* `prevrandao` — repeating until they win. The value is unbiasable, but the attacker chooses *which block's* value gets committed.
 
-**When the caller can profit** (a raffle, a rare-trait mint, or any participant payout), an externally callable one-transaction draw can be exploited. The draw contract does not need to contain any rollback logic: an attacker can wrap it in another contract and revert from the outer call after inspecting the result.
+Aptos blocks this in the VM: randomness is only callable from a `#[randomness]` **private entry** function that nothing can wrap, so the result is always committed. **The EVM has no such guard** — any external function can be wrapped and reverted. The simple fix is to **restrict the draw to a trusted role** (e.g. `onlyOwner`): a participant can't wrap-and-abort a call they can't make, and the operator is trusted to draw once and accept the result.
 
-```solidity
-interface IRaffle {
-    function draw() external;
-    function winner() external view returns (address);
-}
+### Fixed-height draws with `randomness_by_height`
 
-contract RetryUntilWin {
-    error Lost();
+`randomness_by_height` prevents re-rolling only when the protocol fixes the target height **before that block's randomness is known** and freezes every input that can affect the outcome (participants, tickets, weights, traits, and so on). After the target block exists, every finalization attempt reads the same value. Reverting and retrying therefore cannot produce a new draw.
 
-    function tryDraw(IRaffle raffle) external {
-        raffle.draw();
-        if (raffle.winner() != address(this)) revert Lost();
-    }
-}
-```
+The historical value is public, so the safety comes from committing the height and inputs before it is revealed — not from keeping the value secret. In particular:
 
-EVM transactions are atomic. If `tryDraw()` reverts, every state change, log, and transfer made by its nested `raffle.draw()` call is also discarded. This is a **transaction-level revert**, not a chain rollback or fork: the failed transaction can remain in the canonical block and still consumes gas. The attacker retries in a later block for a fresh `prevrandao`; only a winning attempt is allowed to commit. The random value remains unpredictable and unbiasable, but the attacker selectively accepts which block's value reaches state.
+- Do not query `randomness_by_height(block.number)` or choose the latest available height during finalization. A retry in the next block would use a fresh value and recreate test-and-abort.
+- Do not accept a caller-selected historical height or allow the target height to change after its value is known. The caller could inspect past values and cherry-pick a winning block.
+- Do not accept entries or other outcome-affecting inputs after the target block is produced.
+- If the lookup returns `found == false` or an unusable zero value, do not silently fall back to the current block or another caller-selectable height. Keep the committed height or use an explicit recovery rule fixed before any candidate value is revealed.
 
-This attack requires all of the following:
+With these constraints, finalization can be permissionless: an aborted call does not change either the seed or the frozen inputs. For a **trustless** high-value draw that cannot use this fixed-height structure, use participant **commit-reveal** or a dedicated **VRF** (e.g. Chainlink VRF) instead.
 
-- A participant-controlled contract can call the draw.
-- It can determine whether the result is favourable before the top-level transaction finishes.
-- A retry can use a different random value or otherwise change the result.
-
-Choose a defence that matches the trust model:
-
-- **Trusted operator:** restrict `draw()` to a trusted role such as `onlyOwner`, which prevents participants from placing it inside their own reverting call stack. The operator must call once and accept the result. Do not make an unhandled callback or push payment to participant-controlled code during the draw; record the result first and use a pull-based claim so a recipient cannot revert the draw.
-- **Fixed future height:** freeze all participants and inputs before a chosen future block, then let anyone finalize using `randomness_by_height` for that fixed height. A reverted retry reads the same value and cannot re-roll; do not accept new inputs after the value becomes public.
-- **Trustless high-value draw:** use participant **commit-reveal** or a dedicated **VRF** such as Chainlink VRF when neither an operator nor a fixed-height design provides the required guarantees.
-
-Aptos prevents wrapping at the VM level: randomness is callable only from a `#[randomness]` **private entry** function whose result must commit. The EVM has no equivalent general guard, so the contract design must remove the caller's ability to inspect and selectively reject fresh outcomes.
-
-See [`../examples/RandomnessConsumer.sol`](../examples/RandomnessConsumer.sol) for the owner-restricted pattern.
+See [`../examples/RandomnessConsumer.sol`](../examples/RandomnessConsumer.sol) for the owner-restricted `block.prevrandao` pattern.
 
 ## How the value reaches the EVM
 
