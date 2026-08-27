@@ -14,7 +14,7 @@ uint256 dieRoll = (block.prevrandao % 6) + 1;
 
 ## Look up randomness by block height
 
-From the Alpha hardfork onward, contracts can query a block's header `mix_hash` / `prev_randao` through the read-only `randomness_by_height` precompile:
+Contracts can query any block's header `mix_hash` / `prev_randao` through the read-only `randomness_by_height` precompile:
 
 ```text
 0x00000000000000000000000000000001625f5002
@@ -49,9 +49,7 @@ library GravityRandomness {
 }
 ```
 
-`found` reports whether the requested block/header was available; it does not prove that a non-zero Gravity randomness value existed. Check both `found` and `randomness != bytes32(0)` when zero is not valid for your application. Do not treat a pre-Alpha header's `mix_hash` as Gravity protocol randomness.
-
-The current gas policy charges 4,000 gas for the current block, future misses within the `uint64` height range, and the most recent 86,400 ancestor blocks (about eight hours at three blocks per second), and 20,000 gas for older historical lookups. These values are hardfork-adjustable.
+`found` reports whether the requested block/header was available. Do not infer this from the randomness word: check `found` explicitly, and also check `randomness != bytes32(0)` when zero is not valid for your application.
 
 ## Avoid test-and-abort
 
