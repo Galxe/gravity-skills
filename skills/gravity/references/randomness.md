@@ -55,13 +55,13 @@ library GravityRandomness {
 
 **Direct use is fine when no one can profit from a re-roll** — cosmetic rolls, NPC behaviour, sampling where every outcome is equivalent to the caller. Just read `block.prevrandao`.
 
-**When the caller *can* profit** (a raffle, a rare-trait mint — any payout to a participant), a one-call draw from the current block is exploitable. An attacker wraps your `draw()` in their own contract, reverts the whole transaction whenever they lose, and retries next block for a *fresh* `prevrandao` — repeating until they win. The value is unbiasable, but the attacker chooses *which block's* value gets committed.
+**When the caller *can* profit** (a raffle, a rare-trait mint — any payout to a participant), a one-call draw is exploitable. An attacker wraps your `draw()` in their own contract, reverts the whole transaction whenever they lose, and retries next block for a *fresh* `prevrandao` — repeating until they win. The value is unbiasable, but the attacker chooses *which block's* value gets committed.
 
-### Recommended: fix a future height
+**For value-bearing draws, use the fixed-height `randomness_by_height` pattern below.** Commit to a future block height and freeze every outcome-affecting input before that block's randomness is known, then finalize against exactly that height. Every retry reads the same seed and inputs, so reverting cannot produce a new outcome. This removes the test-and-abort re-roll opportunity instead of shifting trust to an operator.
 
-For any value-bearing draw, prefer `randomness_by_height` over drawing from the current block. Fix the target height **before that block's randomness is known**, and freeze every input that can affect the outcome (participants, tickets, weights, traits, and so on). After the target block exists, let anyone finalize against that exact height.
+### Fixed-height draws with `randomness_by_height`
 
-Every finalization attempt then reads the same seed and the same frozen inputs. Reverting and retrying cannot produce a new draw, so this removes the test-and-abort re-roll opportunity without trusting an operator to choose a block and accept its result.
+`randomness_by_height` prevents re-rolling only when the protocol fixes the target height **before that block's randomness is known** and freezes every input that can affect the outcome (participants, tickets, weights, traits, and so on). After the target block exists, every finalization attempt reads the same value. Reverting and retrying therefore cannot produce a new draw.
 
 The historical value is public, so the safety comes from committing the height and inputs before it is revealed — not from keeping the value secret. In particular:
 
@@ -69,11 +69,10 @@ The historical value is public, so the safety comes from committing the height a
 - Do not accept a caller-selected historical height or allow the target height to change after its value is known. The caller could inspect past values and cherry-pick a winning block.
 - Do not accept entries or other outcome-affecting inputs after the target block is produced.
 - If the lookup returns `found == false` or an unusable zero value, do not silently fall back to the current block or another caller-selectable height. Keep the committed height or use an explicit recovery rule fixed before any candidate value is revealed.
-- Do not make an unhandled call to participant-controlled code while finalizing. Store the result first and use a separate pull-based claim so a recipient cannot block finalization.
 
-For a **trustless** high-value draw that cannot freeze its inputs around a fixed future height, use participant **commit-reveal** or a dedicated **VRF** (e.g. Chainlink VRF) instead.
+With these constraints, finalization can be permissionless: an aborted call does not change either the seed or the frozen inputs. For a **trustless** high-value draw that cannot use this fixed-height structure, use participant **commit-reveal** or a dedicated **VRF** (e.g. Chainlink VRF) instead.
 
-Use [`../examples/RandomnessByHeightConsumer.sol`](../examples/RandomnessByHeightConsumer.sol) as the default pattern for value-bearing draws. [`../examples/RandomnessConsumer.sol`](../examples/RandomnessConsumer.sol) is a trusted-operator fallback for cases where that trust assumption is explicit; it does not remove operator discretion over when to draw.
+See [`../examples/RandomnessConsumer.sol`](../examples/RandomnessConsumer.sol) for the owner-restricted `block.prevrandao` pattern, and [`../examples/RandomnessByHeightConsumer.sol`](../examples/RandomnessByHeightConsumer.sol) for the permissionless fixed-height pattern.
 
 ## How the value reaches the EVM
 

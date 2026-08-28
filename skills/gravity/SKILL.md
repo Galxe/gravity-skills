@@ -1,6 +1,6 @@
 ---
 name: gravity
-description: Reference for building smart contracts on and bridging to Gravity L1 (EVM-compatible Layer 1, chain ID 127001, native token G). Use when someone asks how to connect to Gravity (chain ID / RPC / explorer), bridge the G token from Ethereum (via cast, a wallet, or a contract), read the native on-chain oracle or write an oracle callback, use safe on-chain randomness (current-block or fixed-height), find a system or bridge contract address, or which canonical EVM preinstalls (Multicall3, Permit2, CreateX, ERC-4337, Wrapped-G) exist. Covers Gravity Mainnet (127001) and Longevity Testnet (7771625); distinct from the legacy Alpha Mainnet L2 (Arbitrum Nitro, chain 1625).
+description: Reference for building smart contracts on and bridging to Gravity L1 (EVM-compatible Layer 1, chain ID 127001, native token G). Use when someone asks how to connect to Gravity (chain ID / RPC / explorer), bridge the G token from Ethereum (via cast, a wallet, or a contract), read the native on-chain oracle or write an oracle callback, use safe on-chain randomness (block.prevrandao), find a system or bridge contract address, or which canonical EVM preinstalls (Multicall3, Permit2, CreateX, ERC-4337, Wrapped-G) exist. Covers Gravity Mainnet (127001) and Longevity Testnet (7771625); distinct from the legacy Alpha Mainnet L2 (Arbitrum Nitro, chain 1625).
 metadata:
   author: gravity
   version: '0.1'
@@ -27,7 +27,7 @@ Gravity is an **EVM-compatible Layer 1** (AptosBFT consensus + parallel EVM exec
 ## What you might want to do
 
 - **Bridge G from Ethereum** (cast / wallet / contract) → [`references/token-bridge.md`](references/token-bridge.md) + [`examples/bridge-g-from-ethereum.md`](examples/bridge-g-from-ethereum.md)
-- **Get safe randomness** → read `block.prevrandao` when no caller can profit from re-rolling; for raffles, mints, and payouts, prefer a precommitted future height via `randomness_by_height`: [`references/randomness.md`](references/randomness.md)
+- **Get safe randomness** → just read `block.prevrandao`. Details + the test-and-abort caveat: [`references/randomness.md`](references/randomness.md)
 - **Read the native oracle / write a callback** → [`references/native-oracle.md`](references/native-oracle.md) + [`examples/OracleConsumer.sol`](examples/OracleConsumer.sol)
 - **Use Multicall3 / Permit2 / CreateX / ERC-4337 (v0.6–v0.8) / Safe v1.4.1 / wG / bridged USDC.e·USDT.e·WETH.e** → live at their canonical addresses: [`references/preinstalls.md`](references/preinstalls.md)
 - **Find a system contract address** → [`references/system-contracts.md`](references/system-contracts.md)

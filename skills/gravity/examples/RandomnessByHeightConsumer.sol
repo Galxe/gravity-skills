@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30;
 
-// Recommended fixed-height pattern for value-bearing Gravity randomness.
+// Safe fixed-height consumption of Gravity's historical randomness precompile.
 // Read alongside references/randomness.md.
 //
 // The schedule is fixed at deployment:

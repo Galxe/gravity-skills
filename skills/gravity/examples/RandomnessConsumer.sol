@@ -1,13 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30;
 
-// Direct and trusted-operator consumption of Gravity's current-block randomness.
+// Safe consumption of Gravity's on-chain randomness (block.prevrandao).
 // Read alongside references/randomness.md.
-//
-// For any value-bearing draw, prefer RandomnessByHeightConsumer.sol: commit a future
-// block height, freeze every outcome-affecting input, then finalize permissionlessly.
-// The owner-restricted raffle below is only a fallback when operator trust is explicit;
-// it prevents participant wrap-and-abort but still lets the operator choose when to draw.
 //
 // ── When DIRECT use is already safe ──────────────────────────────────────────
 // If no participant can profit by re-running the draw, just read block.prevrandao:
@@ -49,8 +44,8 @@ contract Raffle {
         tickets.push(msg.sender);
     }
 
-    /// Trusted-operator fallback: participants cannot wrap this call and abort on a loss,
-    /// but the owner is trusted to draw once and accept whatever comes out.
+    /// Only the owner can draw — so no participant can wrap this call and abort on a loss.
+    /// The owner is trusted to call it once and accept whatever comes out.
     function draw() external {
         if (msg.sender != owner) revert NotOwner();
         if (!open) revert Closed();
