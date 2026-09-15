@@ -33,14 +33,14 @@ interface IOracleCallback {
 contract OracleConsumer is IOracleCallback {
     // Full 20-byte form of 0x1625F4000.
     INativeOracle constant ORACLE =
-        INativeOracle(0x0000000000000000000000000001625f4000);
+        INativeOracle(0x00000000000000000000000000000001625f4000);
 
     // Source we care about. Example: PRICE_FEED type, some source id.
     uint32  constant SOURCE_TYPE = 3;       // 0=BLOCKCHAIN 1=JWK 2=DNS 3=PRICE_FEED
     uint256 constant SOURCE_ID   = 1;
 
     // NativeOracle is the only address allowed to invoke onOracleEvent.
-    address constant SYSTEM_ORACLE = 0x0000000000000000000000000001625F4000;
+    address constant SYSTEM_ORACLE = 0x00000000000000000000000000000001625f4000;
 
     event LatestPayload(uint128 nonce, bytes data);
 
