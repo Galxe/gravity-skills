@@ -57,7 +57,7 @@ library GravityRandomness {
 
 **When the caller *can* profit** (a raffle, a rare-trait mint — any payout to a participant), a one-call draw is exploitable. An attacker wraps your `draw()` in their own contract, reverts the whole transaction whenever they lose, and retries next block for a *fresh* `prevrandao` — repeating until they win. The value is unbiasable, but the attacker chooses *which block's* value gets committed.
 
-Aptos blocks this in the VM: randomness is only callable from a `#[randomness]` **private entry** function that nothing can wrap, so the result is always committed. **The EVM has no such guard** — any external function can be wrapped and reverted. The simple fix is to **restrict the draw to a trusted role** (e.g. `onlyOwner`): a participant can't wrap-and-abort a call they can't make, and the operator is trusted to draw once and accept the result.
+**For value-bearing draws, use the fixed-height `randomness_by_height` pattern below.** Commit to a future block height and freeze every outcome-affecting input before that block's randomness is known, then finalize against exactly that height. Every retry reads the same seed and inputs, so reverting cannot produce a new outcome. This removes the test-and-abort re-roll opportunity instead of shifting trust to an operator.
 
 ### Fixed-height draws with `randomness_by_height`
 
