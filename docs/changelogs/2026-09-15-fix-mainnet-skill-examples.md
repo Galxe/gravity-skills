@@ -117,7 +117,7 @@ Mainnet Oracle callback and payload-storage behavior is preserved.
 | B2 / F2 / D2 | DONE | Exact fee forwarded; under/overpayment rejected with balances preserved |
 | F1 | DONE | Token transfer/approval failures and bridge failure roll back balances and allowances |
 | B3 / D3 | DONE | Both extracted Bash recipes executed against Anvil; recipient credit, token balance, nonce, and allowance checked |
-| B4 / D4 | DONE | All Solidity examples compile; mainnet-only prose and reserved-address status reviewed |
+| B4 / D4 | DONE | All Solidity examples compile; mainnet-only prose reviewed and undeployed queue removed |
 | R1 / R2 | BOUNDED | Local doubles cover the changed boundary; no real assets or generic-token behavior claimed |
 
 Verification from the `gravity-skills` root:
@@ -131,6 +131,12 @@ Verification from the `gravity-skills` root:
   caller-funded success and victim-deposit isolation tests when substituted
   into a temporary Foundry project. No baseline file was changed.
 - `git diff --check` — exit 0. Local Markdown reference targets exist.
+- After the requested queue deletion, the complete example check was rerun:
+  all eight Foundry tests and both Bash recipes passed again. A reference scan
+  confirmed no OracleRequestQueue mentions remain inside `skills/gravity`.
+- `PATH=/tmp/gravity-publication-tools-2p9gyrac:$PATH /home/yxia/gravity/mono-grav/misc/cc-plugins/plugins/aldev/scripts/secret-scan.sh --base origin/main --pr-body /tmp/gravity-skills-pr-body.md`
+  — exit 0 for the committed candidate, staged additions, and PR body. Used a
+  temporary Gitleaks 8.30.1 binary verified against official release checksums.
 - The generic `quick_validate.py` rejects the pre-existing `compatibility`
   frontmatter field, which was not changed. Validation of a temporary copy
   excluding that field passed. The original metadata was preserved.
@@ -143,7 +149,12 @@ Review covered the complete product diff, tests, scope, fund ownership,
 transaction rollback, current-mainnet semantics, and documentation consistency.
 No unresolved in-scope findings remain.
 
+Published branch: `fix/mainnet-skill-examples`, targeting `main` in
+[PR #5](https://github.com/Galxe/gravity-skills/pull/5). The PR was created ready
+for review. Initial GitHub state was mergeable with no conflicts, checks, or
+review comments. Current automation/review status is available on the PR.
+
 ## 8. Remaining Work
 
 None for the four requested fixes. Other audit findings remain outside this
-change. Publication of `fix/mainnet-skill-examples` and PR checks are pending.
+change. No production deployment or automatic merge is included.
