@@ -1,6 +1,6 @@
 # Native Oracle (`0x1625F4000`)
 
-A protocol-native data store. After validators reach consensus on an external fact, the consensus engine writes it on-chain. Dapps **read** it or get a **push callback**. The [G token bridge](token-bridge.md) is built on it. Source: `gravity_chain_core_contracts/src/oracle/INativeOracle.sol`.
+A protocol-native data store. After validators reach consensus on an external fact, the consensus engine writes it on-chain. Dapps **read** it or get a **push callback**. The [G token bridge](token-bridge.md) is built on it. This reference describes the currently deployed **Gravity Mainnet (127001)** behavior. Deployment reference: [System Contracts](https://docs.gravity.xyz/developer-resources/mainnet).
 
 ## Data model
 
@@ -47,19 +47,6 @@ Rules to respect:
 - Resolution is 2-layer: a specialized callback per `(sourceType, sourceId)` overrides a default per `sourceType` (`setCallback` / `setDefaultCallback`, Governance-only).
 
 Off-chain listeners can watch `DataRecorded(sourceType, sourceId, nonce, dataLength)`.
-
-## On-demand requests — `OracleRequestQueue` (`0x1625F4002`)
-
-For data the network isn't already streaming, pay for a one-off request; validators fulfill it and the result lands in NativeOracle.
-
-```solidity
-interface IOracleRequestQueue {
-    function request(uint32 sourceType, uint256 sourceId, bytes calldata requestData)
-        external payable returns (uint256 requestId); // requestData = type-specific param, e.g. a ticker
-    function refund(uint256 requestId) external;       // reclaim fee after expiry if unfulfilled
-}
-```
-`(sourceType, sourceId)` must be registered in `OnDemandOracleTaskConfig` (`0x1625F100A`).
 
 > `record` / `recordBatch` are `SystemCaller`-only (the consensus engine writes data) — dapps can't call them.
 

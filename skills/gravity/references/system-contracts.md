@@ -1,13 +1,12 @@
 # System contract addresses (L1)
 
-Gravity's protocol runtime lives at **fixed addresses** in the `0x1625F0000`–`0x1625F5xxx` range, deployed at genesis (can't be redeployed; changes need a hardfork). Addresses are the full 20-byte form, e.g. `0x0000000000000000000000000001625F4000`; the short `0x1625F4000` is the same value. Source: [Galxe/gravity_chain_core_contracts](https://github.com/Galxe/gravity_chain_core_contracts) (`src/foundation/SystemAddresses.sol`).
+Gravity's protocol runtime uses **fixed addresses** in the `0x1625F0000`–`0x1625F5xxx` range. Runtime contracts are installed at genesis or through a hardfork; reserved addresses may have no deployed code. The full 20-byte form of `0x1625F4000` is `0x00000000000000000000000000000001625f4000`. Source: [Galxe/gravity_chain_core_contracts](https://github.com/Galxe/gravity_chain_core_contracts) (`src/foundation/SystemAddresses.sol`).
 
 ## Contracts a dapp calls
 
 | Address | Contract | Use it to… |
 | --- | --- | --- |
 | `0x1625F4000` | **NativeOracle** | Read verified cross-chain events / JWKs / DNS / prices, or register a callback — see [`native-oracle.md`](native-oracle.md) |
-| `0x1625F4002` | **OracleRequestQueue** | Pay for an on-demand oracle data request |
 | `0x1625F4001` | **JWKManager** | JWKs for keyless (OAuth) accounts |
 | `0x1625F1000` | **Timestamp** | Microsecond-precision on-chain time |
 | `0x1625F1003` | **RandomnessConfig** | Check whether randomness is enabled — see [`randomness.md`](randomness.md) |
