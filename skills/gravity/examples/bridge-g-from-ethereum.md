@@ -2,7 +2,7 @@
 
 Lock G on **Ethereum mainnet** via `GBridgeSender`; native G is minted to your recipient on **Gravity L1** once consensus relays the message. Addresses + interface: [`../references/token-bridge.md`](../references/token-bridge.md).
 
-> **One-way (Ethereum → Gravity only)** for now — bridged G is locked on Ethereum with no return path yet, so treat it as burned on the Ethereum side. **Minting on Gravity waits for Ethereum finality (~13 min)**, not just for your tx to be mined.
+> **Direction: Ethereum → Gravity.** To go back, see [`bridge-g-to-ethereum.md`](bridge-g-to-ethereum.md). **Minting on Gravity waits for Ethereum finality (~13 min)**, not just for your tx to be mined.
 
 ```
 GBridgeSender  0xE82c61Ac9Ec2041b493118051afa4F18a55dC876   (Ethereum)
@@ -146,4 +146,4 @@ documented G token, which returns booleans and transfers the specified amount.
 - **Fee bounds**: `bridgeToGravity` reverts `InsufficientFee` if you underpay and `ExcessiveFee` if `msg.value > 2× fee`.
 - **One-tx approve**: use `bridgeToGravityWithPermit(amount, recipient, deadline, v, r, s)` to skip the separate `approve` — see the [permit recipe](#one-transaction-with-cast-permit-path-preferred).
 - **Timing**: minting waits for Ethereum *finality* (~2 epochs, ≈13 min), not just inclusion — see [`../references/token-bridge.md`](../references/token-bridge.md).
-- **Direction**: Ethereum → Gravity only today; bridged G is effectively burned on Ethereum until the planned Chainlink-based return path. For other assets/routes see [How to Get G](https://docs.gravity.xyz).
+- **Direction**: this recipe is Ethereum → Gravity. For Gravity → Ethereum use the CCIP bridge in [`bridge-g-to-ethereum.md`](bridge-g-to-ethereum.md). For other assets/routes see [How to Get G](https://docs.gravity.xyz).

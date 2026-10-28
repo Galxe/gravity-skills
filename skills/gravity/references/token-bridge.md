@@ -8,7 +8,7 @@ user → GBridgeSender (locks G)          GBridgeReceiver (mints native G)
           → GravityPortal.send()  ──emits MessageSent──► consensus relays ──► NativeOracle ──► receiver
 ```
 
-> **One-way for now (Ethereum → Gravity only).** There is no user-facing path back yet — your G is locked on Ethereum with no withdraw function, so **treat bridged G as burned on the Ethereum side**. A Gravity → Ethereum return path is planned once the Chainlink integration lands.
+> **This file covers Ethereum → Gravity.** To move native G back to ERC-20 G on Ethereum, use the separate Chainlink CCIP bridge: [`bridge-g-to-ethereum.md`](bridge-g-to-ethereum.md).
 
 > **Timing — wait for Ethereum finality.** G is minted on Gravity only after your Ethereum lock transaction is *finalized*, not merely mined. Under Ethereum's Casper FFG (Gasper) consensus, a block is finalized once the next two epochs are justified/finalized — 1 epoch = 32 slots × 12 s = 6.4 min, so finality is ~2 epochs (**≈13 min**, in practice ~13–19 min depending on where in the epoch your tx landed). Only then does the consensus engine relay the message and mint.
 
