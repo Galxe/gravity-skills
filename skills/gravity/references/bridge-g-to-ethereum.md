@@ -10,7 +10,7 @@ caller ──bridge(recipient, amount){value}──► GravityGSender
                                                                                                 └─ G.mint(recipient, amount)
 ```
 
-**Using it as a user/script?** See [`../examples/bridge-g-to-ethereum.md`](../examples/bridge-g-to-ethereum.md) (cast, viem, Solidity).
+**Bridging as a user?** Use the UI at https://bridge.gravity.xyz (Gravity → Ethereum). **From a script or contract?** See [`../examples/bridge-g-to-ethereum.md`](../examples/bridge-g-to-ethereum.md) (cast, viem, Solidity).
 
 ## Addresses
 

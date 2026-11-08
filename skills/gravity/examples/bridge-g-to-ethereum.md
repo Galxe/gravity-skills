@@ -1,6 +1,6 @@
 # Example: bridge G from Gravity L1 to Ethereum
 
-Send native G on **Gravity L1** and receive ERC-20 G on **Ethereum**. Interface, reverts and caveats: [`../references/bridge-g-to-ethereum.md`](../references/bridge-g-to-ethereum.md).
+Send native G on **Gravity L1** and receive ERC-20 G on **Ethereum**. End users can simply use https://bridge.gravity.xyz; the recipes below are for scripts and contracts. Interface, reverts and caveats: [`../references/bridge-g-to-ethereum.md`](../references/bridge-g-to-ethereum.md).
 
 ```
 GravityGSender   0x40011DF49B772a70b171712f36AA59E1FCdCE62F   (Gravity L1, chain 127001)

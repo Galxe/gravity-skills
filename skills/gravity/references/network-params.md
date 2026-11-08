@@ -10,7 +10,7 @@
 
 Standard Ethereum JSON-RPC (`eth`, `net`, `web3`). Block time ~250 ms; epoch 2 hours. Testnet has the same architecture and system-contract layout as mainnet — use it before deploying.
 
-> **Legacy Alpha Mainnet (L2)** is the older 2024 Arbitrum Nitro rollup, chain ID `1625` — a different network. Only use `1625` if you're explicitly targeting the legacy L2.
+> **Legacy Alpha Mainnet (L2)** is the older 2024 Arbitrum Nitro rollup, chain ID `1625` — a different network, and it **has been shut down**. Do not target `1625`.
 
 ## Tooling config
 
@@ -37,4 +37,4 @@ export const gravity = defineChain({
 
 ## Getting G for gas
 
-You need native **G** to pay gas. Bridge it from Ethereum (see [`token-bridge.md`](token-bridge.md)), withdraw from a CEX, or migrate from Alpha Mainnet (L2). The G ERC-20 on **Ethereum mainnet** is `0x9C7BEBa8F6eF6643aBd725e45a4E8387eF260649`.
+You need native **G** to pay gas. Bridge it from Ethereum at https://bridge.gravity.xyz or by contract (see [`token-bridge.md`](token-bridge.md)), or withdraw from a CEX. The G ERC-20 on **Ethereum mainnet** is `0x9C7BEBa8F6eF6643aBd725e45a4E8387eF260649`.
