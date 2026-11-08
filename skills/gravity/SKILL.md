@@ -1,6 +1,6 @@
 ---
 name: gravity
-description: Reference for building smart contracts on and bridging to Gravity L1 (EVM-compatible Layer 1, chain ID 127001, native token G). Use when someone asks how to connect to Gravity (chain ID / RPC / explorer), bridge the G token from Ethereum (via cast, a wallet, or a contract), bridge native G from Gravity back to Ethereum via the Chainlink CCIP G bridge, use Chainlink CCIP between Gravity and Ethereum, read the native on-chain oracle or write an oracle callback, use safe on-chain randomness (block.prevrandao), find a system or bridge contract address, or which canonical EVM preinstalls (Multicall3, Permit2, CreateX, ERC-4337, Wrapped-G) exist. Covers Gravity Mainnet (127001) and Longevity Testnet (7771625); distinct from the legacy Alpha Mainnet L2 (Arbitrum Nitro, chain 1625).
+description: Reference for building smart contracts on and bridging to Gravity L1 (EVM-compatible Layer 1, chain ID 127001, native token G). Use when someone asks how to connect to Gravity (chain ID / RPC / explorer), bridge the G token from Ethereum (via cast, a wallet, or a contract), bridge native G from Gravity back to Ethereum via the Chainlink CCIP G bridge, use Chainlink CCIP between Gravity and Ethereum, read the native on-chain oracle or write an oracle callback, use safe on-chain randomness (block.prevrandao), find a system or bridge contract address, or which canonical EVM preinstalls (Multicall3, Permit2, CreateX, ERC-4337, Wrapped-G) exist. Covers Gravity Mainnet (127001) and Longevity Testnet (7771625); distinct from the legacy Alpha Mainnet L2 (Arbitrum Nitro, chain 1625), which has been shut down.
 metadata:
   author: gravity
   version: '0.1'
@@ -20,9 +20,10 @@ Gravity is an **EVM-compatible Layer 1** (AptosBFT consensus + parallel EVM exec
 | **RPC** | `https://mainnet-rpc.gravity.xyz` |
 | **Explorer** | `https://mainnet-explorer.gravity.xyz` (Blockscout) |
 | **Add to wallet** | https://chainlist.org/chain/127001 |
+| **Bridge UI** | https://bridge.gravity.xyz (Ethereum ↔ Gravity, both directions) |
 | **G ERC-20 on Ethereum** | `0x9C7BEBa8F6eF6643aBd725e45a4E8387eF260649` (the token you bridge from) |
 
-> The legacy **Alpha Mainnet (L2, Arbitrum Nitro, chain `1625`)** is a different, older network — don't confuse it with this L1. More: [`references/network-params.md`](references/network-params.md).
+> The legacy **Alpha Mainnet (L2, Arbitrum Nitro, chain `1625`)** is a different, older network and **has been shut down** — don't confuse it with this L1 or suggest using it. More: [`references/network-params.md`](references/network-params.md).
 
 ## What you might want to do
 

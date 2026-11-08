@@ -12,7 +12,7 @@ user → GBridgeSender (locks G)          GBridgeReceiver (mints native G)
 
 > **Timing — wait for Ethereum finality.** G is minted on Gravity only after your Ethereum lock transaction is *finalized*, not merely mined. Under Ethereum's Casper FFG (Gasper) consensus, a block is finalized once the next two epochs are justified/finalized — 1 epoch = 32 slots × 12 s = 6.4 min, so finality is ~2 epochs (**≈13 min**, in practice ~13–19 min depending on where in the epoch your tx landed). Only then does the consensus engine relay the message and mint.
 
-**Bridging as a user?** Use a wallet or `cast` — see [`../examples/bridge-g-from-ethereum.md`](../examples/bridge-g-from-ethereum.md). The rest of this file is the contract interface.
+**Bridging as a user?** Use the UI at https://bridge.gravity.xyz, or a wallet / `cast` — see [`../examples/bridge-g-from-ethereum.md`](../examples/bridge-g-from-ethereum.md). The rest of this file is the contract interface.
 
 ## Addresses
 
